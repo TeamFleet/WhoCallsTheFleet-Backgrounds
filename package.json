@@ -1,0 +1,39 @@
+{
+    "name": "whocallsthefleet-backgrounds",
+
+    "version": "1.0.0",
+
+    "description": "Background image converter and files for Who Calls the Fleet (https://fleet.moe)",
+    "author": {
+        "name": "Diablohu",
+        "email": "diablohudream@gmail.com",
+        "url": "http://diablohu.com"
+    },
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Diablohu/WhoCallsTheFleet-Backgrounds"
+    },
+
+
+
+
+    "scripts": {
+        "start": "npm run build",
+        "build": "node ./convert"
+    },
+
+
+
+
+    "dependencies": {
+    },
+    "devDependencies": {
+        "imagemin": "^5.2.2",
+        "imagemin-guetzli": "^0.1.5",
+        "imagemin-webp": "^4.0.0",
+        "glob-promise": "^3.1.0",
+        "q": "^1.5.0",
+        "fs-extra": "^3.0.0"
+    }
+}
