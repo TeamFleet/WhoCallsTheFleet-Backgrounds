@@ -10,6 +10,8 @@ const imageminWebp = require('imagemin-webp')
 
 const dirOutput = './output'
 
+let filesFailed = []
+
 const getOptions = (settings = {}) => Object.assign({
     output: dirOutput,
     webpQuality: 80,
@@ -89,6 +91,8 @@ fs.ensureDir(dirOutput)
 
     // copy /src/thumbnail
     .then(() => fs.copy('./src/thumbnail', path.resolve(dirOutput, 'thumbnail')))
+
+    // retry failed files
 
     .then(() => {
         console.log('')
