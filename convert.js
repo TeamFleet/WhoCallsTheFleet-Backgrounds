@@ -32,7 +32,6 @@ const convert = (files, settings) => new Promise((resolve, reject) => {
         console.log(options.logType + ' success')
         resolve()
     }).catch(err => {
-        console.log(123123)
         console.log(err)
         reject(err)
     })
@@ -59,9 +58,37 @@ const convertFile = (file, settings) => {
         console.log(path.basename(file) + ' - ' + logType + ' - jpeg - Converted Successfully')
     }))
         .catch(err => {
-            console.log(err)
+            filesFailed.push({
+                file,
+                options
+            })
+            console.log(file + ' - FAILED')
+            // console.log(123123)
+            // console.log(err)
         })
 }
+
+const convertFailed = () => new Promise((resolve, reject) => {
+    let chain = Q.fcall(() => { })
+    const list = [...filesFailed]
+    filesFailed = []
+
+    list.forEach(file => {
+        chain = chain.then(() => convertFile(file.file, file.options))
+    })
+
+    chain = chain.then(() => {
+        if (filesFailed.length) {
+            convertFailed()
+        } else {
+            console.log('failed files success')
+            resolve()
+        }
+    }).catch(err => {
+        console.log(err)
+        reject(err)
+    })
+})
 
 // ensure dir: /output
 fs.ensureDir(dirOutput)
@@ -93,6 +120,7 @@ fs.ensureDir(dirOutput)
     .then(() => fs.copy('./src/thumbnail', path.resolve(dirOutput, 'thumbnail')))
 
     // retry failed files
+    .then(convertFailed)
 
     .then(() => {
         console.log('')
