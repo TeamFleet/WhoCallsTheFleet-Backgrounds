@@ -108,7 +108,7 @@ fs.ensureDir(dirOutput)
     }))
 
     // retry failed files
-    .then(convertFailed)
+    .then(() => convertFailed())
 
     // rename all .png to .jpg
     .then(() => glob(dirOutput + '/**/*.png'))
