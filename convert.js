@@ -107,6 +107,9 @@ fs.ensureDir(dirOutput)
         logType: 'Blured'
     }))
 
+    // retry failed files
+    .then(convertFailed)
+
     // rename all .png to .jpg
     .then(() => glob(dirOutput + '/**/*.png'))
     .then(files => new Promise((resolve, rejact) => {
@@ -118,9 +121,6 @@ fs.ensureDir(dirOutput)
 
     // copy /src/thumbnail
     .then(() => fs.copy('./src/thumbnail', path.resolve(dirOutput, 'thumbnail')))
-
-    // retry failed files
-    .then(convertFailed)
 
     .then(() => {
         console.log('')
