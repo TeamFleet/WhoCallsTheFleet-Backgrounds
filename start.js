@@ -4,6 +4,7 @@ const ora = require('ora')
 const spinners = require('cli-spinners')
 const ProgressBar = require('progress')
 const glob = require('glob-promise')
+const ncp = require('ncp').ncp
 const imagemin = require('imagemin')
 const imageminGuetzli = require('imagemin-guetzli')
 const imageminWebp = require('imagemin-webp')
@@ -284,6 +285,25 @@ const run = async () => {
         else
             spinner(step)
                 .succeed(step + ' (无新图)')
+    }
+
+    /************************************************
+     * 复制图片：原图
+     ***********************************************/
+    {
+        ncp.limit = 16
+        const step = '复制图片：原图'
+        const waiting = spinner(step)
+        await new Promise((resolve, reject) => {
+            ncp(
+                path.resolve(dir.source, './original'),
+                path.resolve(dir.output, './original'),
+                function (err) {
+                    if (err) return reject(err)
+                    resolve()
+                })
+        })
+        waiting.succeed()
     }
 
     console.log('')
